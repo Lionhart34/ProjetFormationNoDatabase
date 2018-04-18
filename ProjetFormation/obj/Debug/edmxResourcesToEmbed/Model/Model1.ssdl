@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Personnes" EntityType="Model1.Store.Personnes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Competences" EntityType="Model1.Store.Competences" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CompetencePersonne" Association="Model1.Store.CompetencePersonne">
+      <End Role="Competence" EntitySet="Competences" />
+      <End Role="Personne" EntitySet="Personnes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Personnes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Prenom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CompetenceId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Competences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Libelle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LibelleCourt" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Couleur" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="CompetencePersonne">
+    <End Role="Competence" Type="Model1.Store.Competences" Multiplicity="0..1" />
+    <End Role="Personne" Type="Model1.Store.Personnes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competence">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personne">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

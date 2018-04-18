@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Personnes" EntityType="Model1.Personne" />
+    <EntitySet Name="Competences" EntityType="Model1.Competence" />
+    <AssociationSet Name="CompetencePersonne" Association="Model1.CompetencePersonne">
+      <End Role="Competence" EntitySet="Competences" />
+      <End Role="Personne" EntitySet="Personnes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Personne">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nom" Type="String" Nullable="true" />
+    <Property Name="Prenom" Type="String" Nullable="true" />
+    <Property Name="CompetenceId" Type="Int32" Nullable="true" />
+    <NavigationProperty Name="CompetencePrincipale" Relationship="Model1.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
+  </EntityType>
+  <EntityType Name="Competence">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Libelle" Type="String" Nullable="false" />
+    <Property Name="LibelleCourt" Type="String" Nullable="false" />
+    <Property Name="Couleur" Type="String" Nullable="false" />
+    <NavigationProperty Name="Personne" Relationship="Model1.CompetencePersonne" FromRole="Competence" ToRole="Personne" />
+  </EntityType>
+  <Association Name="CompetencePersonne">
+    <End Type="Model1.Competence" Role="Competence" Multiplicity="0..1" />
+    <End Type="Model1.Personne" Role="Personne" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competence">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personne">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

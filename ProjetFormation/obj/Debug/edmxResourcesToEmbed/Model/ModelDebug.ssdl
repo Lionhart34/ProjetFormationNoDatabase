@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ModelDebug.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelDebugStoreContainer">
+    <EntitySet Name="PersonneDebugs" EntityType="ModelDebug.Store.PersonneDebugs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CompetenceDebugs" EntityType="ModelDebug.Store.CompetenceDebugs" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CompetencePersonne" Association="ModelDebug.Store.CompetencePersonne">
+      <End Role="CompetenceDebug" EntitySet="CompetenceDebugs" />
+      <End Role="PersonneDebug" EntitySet="PersonneDebugs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PersonneDebugs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Prenom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CompetenceId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="CompetenceDebugs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Libelle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LibelleCourt" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Couleur" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="CompetencePersonne">
+    <End Role="CompetenceDebug" Type="ModelDebug.Store.CompetenceDebugs" Multiplicity="0..1" />
+    <End Role="PersonneDebug" Type="ModelDebug.Store.PersonneDebugs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompetenceDebug">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PersonneDebug">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

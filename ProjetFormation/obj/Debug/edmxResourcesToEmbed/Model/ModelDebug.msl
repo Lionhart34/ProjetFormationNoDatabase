@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelDebugStoreContainer" CdmEntityContainer="ModelDebugContainer1">
+    <EntitySetMapping Name="PersonneDebugs">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.PersonneDebug)">
+        <MappingFragment StoreEntitySet="PersonneDebugs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+          <ScalarProperty Name="CompetenceId" ColumnName="CompetenceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompetenceDebugs">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.CompetenceDebug)">
+        <MappingFragment StoreEntitySet="CompetenceDebugs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="LibelleCourt" ColumnName="LibelleCourt" />
+          <ScalarProperty Name="Couleur" ColumnName="Couleur" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
