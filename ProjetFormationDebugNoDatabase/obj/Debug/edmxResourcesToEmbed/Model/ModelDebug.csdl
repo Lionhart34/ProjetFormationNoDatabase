@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ModelDebug" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="ModelDebugContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+    <EntitySet Name="Competences" EntityType="ModelDebug.Competence" />
+    <EntitySet Name="Personnes" EntityType="ModelDebug.Personne" />
+    <AssociationSet Name="CompetencePersonne" Association="ModelDebug.CompetencePersonne">
+      <End Role="Competence" EntitySet="Competences" />
+      <End Role="Personne" EntitySet="Personnes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Competence">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="Libelle" Type="String" Nullable="false" />
+    <Property Name="LibelleCourt" Type="String" Nullable="false" />
+    <Property Name="Couleur" Type="String" Nullable="false" />
+    <NavigationProperty Name="Personnes" Relationship="ModelDebug.CompetencePersonne" FromRole="Competence" ToRole="Personne" />
+  </EntityType>
+  <EntityType Name="Personne">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="Nom" Type="String" Nullable="true" />
+    <Property Name="Prenom" Type="String" Nullable="true" />
+    <NavigationProperty Name="Competence" Relationship="ModelDebug.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
+    <Property Name="CompetenceId" Type="Int32" Nullable="true" />
+  </EntityType>
+  <Association Name="CompetencePersonne">
+    <End Type="ModelDebug.Competence" Role="Competence" Multiplicity="0..1" />
+    <End Type="ModelDebug.Personne" Role="Personne" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competence">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personne">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
