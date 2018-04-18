@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      
+    <Schema Namespace="ModelDebug.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ModelDebugStoreContainer">
+    <EntitySet Name="Competences" EntityType="ModelDebug.Store.Competences" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Personnes" EntityType="ModelDebug.Store.Personnes" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CompetencePersonne" Association="ModelDebug.Store.CompetencePersonne">
+      <End Role="Competence" EntitySet="Competences" />
+      <End Role="Personne" EntitySet="Personnes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Competences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Libelle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LibelleCourt" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Couleur" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Personnes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Prenom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CompetenceId" Type="int" Nullable="true" />
+  </EntityType>
+  <Association Name="CompetencePersonne">
+    <End Role="Competence" Type="ModelDebug.Store.Competences" Multiplicity="0..1" />
+    <End Role="Personne" Type="ModelDebug.Store.Personnes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competence">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personne">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelDebug" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="ModelDebugContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Competences" EntityType="ModelDebug.Competence" />
+          <EntitySet Name="Personnes" EntityType="ModelDebug.Personne" />
+          <AssociationSet Name="CompetencePersonne" Association="ModelDebug.CompetencePersonne">
+            <End Role="Competence" EntitySet="Competences" />
+            <End Role="Personne" EntitySet="Personnes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Competence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Libelle" Type="String" Nullable="false" />
+          <Property Name="LibelleCourt" Type="String" Nullable="false" />
+          <Property Name="Couleur" Type="String" Nullable="false" />
+          <NavigationProperty Name="Personnes" Relationship="ModelDebug.CompetencePersonne" FromRole="Competence" ToRole="Personne" />
+        </EntityType>
+        <EntityType Name="Personne">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" Nullable="true" />
+          <Property Name="Prenom" Type="String" Nullable="true" />
+          <NavigationProperty Name="Competence" Relationship="ModelDebug.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
+          <Property Name="CompetenceId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <Association Name="CompetencePersonne">
+          <End Type="ModelDebug.Competence" Role="Competence" Multiplicity="0..1" />
+          <End Type="ModelDebug.Personne" Role="Personne" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Competence">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Personne">
+              <PropertyRef Name="CompetenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelDebugStoreContainer" CdmEntityContainer="ModelDebugContainer">
+    <EntitySetMapping Name="Competences">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.Competence)">
+        <MappingFragment StoreEntitySet="Competences">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="LibelleCourt" ColumnName="LibelleCourt" />
+          <ScalarProperty Name="Couleur" ColumnName="Couleur" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Personnes">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.Personne)">
+        <MappingFragment StoreEntitySet="Personnes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+          <ScalarProperty Name="CompetenceId" ColumnName="CompetenceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="Par défaut" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
