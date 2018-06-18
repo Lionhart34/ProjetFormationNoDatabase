@@ -4,5 +4,6 @@
 
 
     <conv:InstanceToBooleanConverter x:Key="InstanceToBooleanConverterKey"/>
+    <conv:EnumToDescriptionConverter x:Key="EnumToDescriptionConverterKey"/>
 
 </ResourceDictionary>

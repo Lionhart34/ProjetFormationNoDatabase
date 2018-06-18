@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjetFormationDebugModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ProjetFormationDebugModelStoreContainer">
+    <EntitySet Name="Competences" EntityType="ProjetFormationDebugModel.Store.Competences" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Personnes" EntityType="ProjetFormationDebugModel.Store.Personnes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Projets" EntityType="ProjetFormationDebugModel.Store.Projets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Lots" EntityType="ProjetFormationDebugModel.Store.Lots" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CompetencePersonne" Association="ProjetFormationDebugModel.Store.FK_CompetencePersonne">
+      <End Role="Competences" EntitySet="Competences" />
+      <End Role="Personnes" EntitySet="Personnes" />
+    </AssociationSet>
+    <AssociationSet Name="ProjetLot" Association="ProjetFormationDebugModel.Store.ProjetLot">
+      <End Role="Projet" EntitySet="Projets" />
+      <End Role="Lot" EntitySet="Lots" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Competences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Libelle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LibelleCourt" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Couleur" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Personnes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Prenom" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CompetenceId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Projets">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateDebut" Type="datetime" Nullable="true" />
+    <Property Name="DateFin" Type="datetime" Nullable="true" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CAInitial" Type="float" Nullable="true" />
+    <Property Name="CodeEtat" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Lots">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Projet_ID" Type="int" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_CompetencePersonne">
+    <End Role="Competences" Type="ProjetFormationDebugModel.Store.Competences" Multiplicity="0..1" />
+    <End Role="Personnes" Type="ProjetFormationDebugModel.Store.Personnes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competences">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personnes">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjetLot">
+    <End Role="Projet" Type="ProjetFormationDebugModel.Store.Projets" Multiplicity="0..1" />
+    <End Role="Lot" Type="ProjetFormationDebugModel.Store.Lots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projet">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Lot">
+        <PropertyRef Name="Projet_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

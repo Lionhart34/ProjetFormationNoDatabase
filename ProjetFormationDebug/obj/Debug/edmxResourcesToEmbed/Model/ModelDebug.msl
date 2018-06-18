@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProjetFormationDebugModelStoreContainer" CdmEntityContainer="ModelDebugEntities">
+    <EntitySetMapping Name="Competences">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Competence)">
+        <MappingFragment StoreEntitySet="Competences">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="LibelleCourt" ColumnName="LibelleCourt" />
+          <ScalarProperty Name="Couleur" ColumnName="Couleur" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Personnes">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Personne)">
+        <MappingFragment StoreEntitySet="Personnes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+          <ScalarProperty Name="CompetenceId" ColumnName="CompetenceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projets">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Projet)">
+        <MappingFragment StoreEntitySet="Projets">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+          <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="CAInitial" ColumnName="CAInitial" />
+          <ScalarProperty Name="CodeEtat" ColumnName="CodeEtat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lots">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Lot)">
+        <MappingFragment StoreEntitySet="Lots">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ProjetLot" TypeName="ProjetFormationDebugModel.ProjetLot" StoreEntitySet="Lots">
+      <EndProperty Name="Projet">
+        <ScalarProperty Name="ID" ColumnName="Projet_ID" />
+      </EndProperty>
+      <EndProperty Name="Lot">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+      <Condition ColumnName="Projet_ID" IsNull="false" />
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

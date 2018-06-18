@@ -19,6 +19,6 @@ namespace ProjetFormationDebugNoDatabase.Model
         public string Prenom { get; set; }
         public Nullable<int> CompetenceId { get; set; }
     
-        public virtual Competence Competence { get; set; }
+        public virtual Competence CompetencePrincipale { get; set; }
     }
 }

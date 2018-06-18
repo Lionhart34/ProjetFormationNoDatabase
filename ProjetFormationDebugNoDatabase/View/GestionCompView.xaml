@@ -3,42 +3,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:ProjetFormationDebug.Converter"
+             xmlns:ViewModel="clr-namespace:ProjetFormationDebugNoDatabase.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="GridPrincipal">
+        <Grid.Resources>
+            
+            <!--definition du style de chaque comp-->
+            <DataTemplate x:Key="Comp" DataType="{x:Type ListViewItem}">
+                <TextBlock 
+                        Text="{Binding LibelleCourt}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Padding="5 1" Margin="0"
+                        Foreground="White"
+                        Width="35">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background" Value="Gray"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger
+                                        Binding="{Binding
+                                        RelativeSource={RelativeSource
+                                        Mode=FindAncestor,
+                                        AncestorType={x:Type ListBoxItem}},
+                                        Path=IsSelected}"
+                                        Value="True">
+                                    <Setter Property="Background" Value="{Binding Couleur}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </DataTemplate>
+
+            <!--definition de list de comp-->
+            <DataTemplate x:Key="ListCompTemplate" DataType="{x:Type ListView}">
+            </DataTemplate>
+            
+            <!--Template de definition par personne-->
+            <DataTemplate x:Key="ListPersTemplate" DataType="{x:Type ItemsControl}">
+                <StackPanel
+                    Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=Nom}" Width="150" />
+                    <ListBox
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Margin="0 1"
+                        ItemsSource="{Binding DataContext.Competences,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Mode=OneWay}"
+                        ItemTemplate="{StaticResource Comp}"
+                        SelectedItem="{Binding CompetencePrincipale, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Delay=5}"
+                        >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Margin="0" Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </StackPanel>
+            </DataTemplate>
+            
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
+        <!--Etage 1 avec utilisation de mode binding update on lostFocus-->
         <ItemsControl ItemsSource="{Binding Personnes}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Path=Nom}" Width="150" />
+
+                        <!--*******************************Option avec ListBox*******************************************************-->
                         <ListBox 
                             BorderThickness="0"
                             Background="Transparent"
                             Margin="0 1"
                             ItemsSource="{Binding DataContext.Competences,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Mode=OneWay}"
-                            SelectedItem="{Binding Path=Competence, Mode=TwoWay}"
+                            SelectedItem="{Binding CompetencePrincipale, Mode=TwoWay}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             >
-                            <!--                            ItemsSource="{Binding DataContext.Competences,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Mode=OneWay}"
-                            SelectedItem="{Binding Competence}"-->
-                            
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="Padding" Value="0"/>
-                                    <!--<Setter Property="IsSelected"
-                                            Value="{Binding Id,
-                                            ConverterParameter={Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag},
-                                            Converter={StaticResource InstanceToBooleanConverterKey}}"
-                                            />-->
                                 </Style>
                             </ListBox.ItemContainerStyle>
-                            
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Margin="0" Orientation="Horizontal"/>
@@ -73,70 +132,161 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Command="{Binding DataContext.ThisOne,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding .}">test</Button>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <ItemsControl ItemsSource="{Binding Personnes}" Grid.Row="1">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=Nom}" Width="150" />
-                        <TextBlock Text="{Binding Path=Competence.LibelleCourt}" Width="150" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <!--Version sans style--> 
-        
-        <!--<ItemsControl
-            x:Name="AllPersons"
-            Grid.Row="2"
-            ItemsSource="{Binding Personnes}">
-
-            <ItemsControl.Resources>
-                
-            </ItemsControl.Resources>
-
-            --><!-- host the items generated by this ItemsControl in a StackPanel --><!--
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>                    
-                    <StackPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            --><!-- render each bound item using a TextBlock--><!--
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=Nom}" Width="150" />
-                        <ListBox
+                        <!--*******************************Option avec ListBox*******************************************************-->
+                        
+                        <!--*******************************Option avec ListView******************************************************--><!--
+                        <ListView
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Margin="0 1"
                             ItemsSource="{Binding DataContext.Competences,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Mode=OneWay}"
-                            SelectedItem="{Binding Path=Competence, Mode=TwoWay}"
+                            SelectedItem="{Binding CompetencePrincipale}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"                            
                             >
-                            <ListBox.ItemsPanel>
+                        --><!--SelectedItem="{Binding Path=Competence, Mode=TwoWay}"--><!--
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="IsSelected">
+                                        <Setter.Value>
+                                            <Binding Path="Id">
+                                                <Binding.Converter>
+                                                    <conv:InstanceToBooleanConverter/>
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
+                                    <StackPanel Margin="0" Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate >
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
                                     <TextBlock 
-                                    Text="{Binding LibelleCourt}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Left"
-                                    Padding="5 1" Margin="0"
-                                    Width="35"/>
+                                        Text="{Binding LibelleCourt}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Padding="5 1" Margin="0"
+                                        Foreground="White"
+                                        Width="35">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="Gray"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding
+                                                        RelativeSource={RelativeSource
+                                                        Mode=FindAncestor,
+                                                        AncestorType={x:Type ListViewItem}},
+                                                        Path=IsSelected}"
+                                                        Value="True">
+                                                        <Setter Property="Background" Value="{Binding Couleur}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        --><!--******************************Option avec ListView******************************************************-->
+
+                        <!--*******************************Option avec ComboBox*******************************************************-->
+                        <!--<ComboBox
+                            DisplayMemberPath="LibelleCourt"
+                            ItemsSource="{Binding DataContext.Competences,
+                                          RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            SelectedValuePath="."
+                            SelectedValue="{Binding CompetencePrincipale}"
+                            >
+                        </ComboBox>-->
+                        <!--*******************************Option avec ComboBox*******************************************************-->
+                        
+                        <TextBlock Text="{Binding Path=CompetencePrincipale.LibelleCourt}" Width="150" />
+                        <Button Command="{Binding DataContext.ThisOne,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding .}">test</Button>
+                        
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--Etage 1 avec utilisation de mode binding update on lostFocus-->
+
+        <!--Etage 2 tentative d'utilisation de template preenregistrer -->
+        <!--<ItemsControl ItemsSource="{Binding Personnes}" Grid.Row="1"
+                        ItemTemplate="{StaticResource ListPersTemplate}">
+        </ItemsControl>-->
+        <!--Etage 2 tentative d'utilisation de template preenregistrer -->
+
+        <!--Etage 3 avec utilisation de classe Wrapper-->
+        <!--<ItemsControl ItemsSource="{Binding PersonnesWrapper}"
+                       Grid.Row="2">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=P.Nom}" Width="150" />
+                        --><!--*******************************Option avec ListView******************************************************--><!--
+                        <ListView
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Margin="0 1"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"         
+                            ItemsSource="{Binding Listcompetences}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                            SelectedValuePath="{Binding Competence}" 
+                            DisplayMemberPath="Nom"
+                            >
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Margin="0" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding LibelleCourt}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Padding="5 1" Margin="0"
+                                        Foreground="White"
+                                        Width="35">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="Gray"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding
+                                                        RelativeSource={RelativeSource
+                                                        Mode=FindAncestor,
+                                                        AncestorType={x:Type ListViewItem}},
+                                                        Path=IsSelected}"
+                                                        Value="True">
+                                                        <Setter Property="Background" Value="{Binding Couleur}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                            --><!--******************************Option avec ListView******************************************************--><!--
+                        <TextBlock Text="{Binding Path=P.CompetencePrincipale.LibelleCourt}" Width="150" />
+                        <Button Command="{Binding ThisOne}">test</Button>
+
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>-->
+        <!--Etage 3 avec utilisation de classe Wrapper-->
+
 
     </Grid>
 </UserControl>

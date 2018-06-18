@@ -1,4 +1,4 @@
-﻿// La génération de code T4 est activée pour le modèle 'C:\Users\gnicot\documents\visual studio 2013\Projects\ProjetFormationDebug\ProjetFormationDebugNoDatabase\Model\ModelDebug.edmx'. 
+﻿// La génération de code T4 est activée pour le modèle 'C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormationNoDatabase\ProjetFormationDebugNoDatabase\Model\ModelDebug.edmx'. 
 // Pour activer la génération de code héritée, définissez la valeur de la propriété
 // du concepteur 'Stratégie de génération de code' sur 'ObjectContext hérité'. Cette propriété est disponible dans la fenêtre Propriétés lorsque le modèle
 //  est ouvert dans le concepteur.

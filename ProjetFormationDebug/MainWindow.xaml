@@ -11,6 +11,7 @@
             Grid.Column="0">
             <Button Margin="5 3" Padding="2" Command="{Binding GoToProj}" CommandParameter="1">Gestion de Projet</Button>
             <Button Margin="5 3" Padding="2" Command="{Binding GoToComp}" CommandParameter="2">Gestion de Comp</Button>
+            <Button Margin="5 3" Padding="2" Command="{Binding Modif}" >Enregistrer</Button>
             <Button Margin="5 3" Padding="2" Command="{Binding Enregistrer}" >Enregistrer</Button>
         </StackPanel>
 

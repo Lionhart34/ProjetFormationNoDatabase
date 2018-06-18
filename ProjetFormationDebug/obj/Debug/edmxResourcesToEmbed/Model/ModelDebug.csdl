@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjetFormationDebugModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="Competence">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Libelle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LibelleCourt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Couleur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Personnes" Relationship="Self.FK_CompetencePersonne" FromRole="Competences" ToRole="Personnes" />
+  </EntityType>
+  <EntityType Name="Personne">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Prenom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CompetenceId" Type="Int32" />
+    <NavigationProperty Name="Competence" Relationship="Self.FK_CompetencePersonne" FromRole="Personnes" ToRole="Competences" />
+  </EntityType>
+  <Association Name="FK_CompetencePersonne">
+    <End Role="Competences" Type="ProjetFormationDebugModel.Competence" Multiplicity="0..1" />
+    <End Role="Personnes" Type="ProjetFormationDebugModel.Personne" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competences">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Personnes">
+        <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelDebugEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+    <EntitySet Name="Competences" EntityType="ProjetFormationDebugModel.Competence" />
+    <EntitySet Name="Personnes" EntityType="ProjetFormationDebugModel.Personne" />
+    <AssociationSet Name="FK_CompetencePersonne" Association="Self.FK_CompetencePersonne">
+      <End Role="Competences" EntitySet="Competences" />
+      <End Role="Personnes" EntitySet="Personnes" />
+    </AssociationSet>
+    <EntitySet Name="Projets" EntityType="ProjetFormationDebugModel.Projet" />
+    <EntitySet Name="Lots" EntityType="ProjetFormationDebugModel.Lot" />
+    <AssociationSet Name="ProjetLot" Association="ProjetFormationDebugModel.ProjetLot">
+      <End Role="Projet" EntitySet="Projets" />
+      <End Role="Lot" EntitySet="Lots" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Projet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="DateDebut" Type="DateTime" Nullable="true" />
+    <Property Name="DateFin" Type="DateTime" Nullable="true" />
+    <Property Name="Nom" Type="String" Nullable="false" />
+    <Property Name="CAInitial" Type="Double" />
+    <Property Name="CodeEtat" Type="Int32" Nullable="true" />
+    <NavigationProperty Name="Lots" Relationship="ProjetFormationDebugModel.ProjetLot" FromRole="Projet" ToRole="Lot" />
+  </EntityType>
+  <EntityType Name="Lot">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="Nom" Type="String" Nullable="false" />
+    <NavigationProperty Name="Projet" Relationship="ProjetFormationDebugModel.ProjetLot" FromRole="Lot" ToRole="Projet" />
+  </EntityType>
+  <Association Name="ProjetLot">
+    <End Type="ProjetFormationDebugModel.Projet" Role="Projet" Multiplicity="0..1" />
+    <End Type="ProjetFormationDebugModel.Lot" Role="Lot" Multiplicity="*" />
+  </Association>
+</Schema>

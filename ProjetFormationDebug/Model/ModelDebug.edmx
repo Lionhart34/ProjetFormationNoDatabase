@@ -4,14 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      
-    <Schema Namespace="ModelDebug.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-  <EntityContainer Name="ModelDebugStoreContainer">
-    <EntitySet Name="Competences" EntityType="ModelDebug.Store.Competences" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Personnes" EntityType="ModelDebug.Store.Personnes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="CompetencePersonne" Association="ModelDebug.Store.CompetencePersonne">
-      <End Role="Competence" EntitySet="Competences" />
-      <End Role="Personne" EntitySet="Personnes" />
+    <Schema Namespace="ProjetFormationDebugModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ProjetFormationDebugModelStoreContainer">
+    <EntitySet Name="Competences" EntityType="ProjetFormationDebugModel.Store.Competences" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Personnes" EntityType="ProjetFormationDebugModel.Store.Personnes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Projets" EntityType="ProjetFormationDebugModel.Store.Projets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Lots" EntityType="ProjetFormationDebugModel.Store.Lots" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CompetencePersonne" Association="ProjetFormationDebugModel.Store.FK_CompetencePersonne">
+      <End Role="Competences" EntitySet="Competences" />
+      <End Role="Personnes" EntitySet="Personnes" />
+    </AssociationSet>
+    <AssociationSet Name="ProjetLot" Association="ProjetFormationDebugModel.Store.ProjetLot">
+      <End Role="Projet" EntitySet="Projets" />
+      <End Role="Lot" EntitySet="Lots" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Competences">
@@ -32,71 +37,131 @@
     <Property Name="Prenom" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CompetenceId" Type="int" Nullable="true" />
   </EntityType>
-  <Association Name="CompetencePersonne">
-    <End Role="Competence" Type="ModelDebug.Store.Competences" Multiplicity="0..1" />
-    <End Role="Personne" Type="ModelDebug.Store.Personnes" Multiplicity="*" />
+  <EntityType Name="Projets">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateDebut" Type="datetime" Nullable="true" />
+    <Property Name="DateFin" Type="datetime" Nullable="true" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CAInitial" Type="float" Nullable="true" />
+    <Property Name="CodeEtat" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Lots">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Projet_ID" Type="int" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_CompetencePersonne">
+    <End Role="Competences" Type="ProjetFormationDebugModel.Store.Competences" Multiplicity="0..1" />
+    <End Role="Personnes" Type="ProjetFormationDebugModel.Store.Personnes" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Competence">
+      <Principal Role="Competences">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Personne">
+      <Dependent Role="Personnes">
         <PropertyRef Name="CompetenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjetLot">
+    <End Role="Projet" Type="ProjetFormationDebugModel.Store.Projets" Multiplicity="0..1" />
+    <End Role="Lot" Type="ProjetFormationDebugModel.Store.Lots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projet">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Lot">
+        <PropertyRef Name="Projet_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ModelDebug" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
-        <EntityContainer Name="ModelDebugContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Competences" EntityType="ModelDebug.Competence" />
-          <EntitySet Name="Personnes" EntityType="ModelDebug.Personne" />
-          <AssociationSet Name="CompetencePersonne" Association="ModelDebug.CompetencePersonne">
-            <End Role="Competence" EntitySet="Competences" />
-            <End Role="Personne" EntitySet="Personnes" />
-          </AssociationSet>
-        </EntityContainer>
+      <Schema Namespace="ProjetFormationDebugModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityType Name="Competence">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Libelle" Type="String" Nullable="false" />
-          <Property Name="LibelleCourt" Type="String" Nullable="false" />
-          <Property Name="Couleur" Type="String" Nullable="false" />
-          <NavigationProperty Name="Personnes" Relationship="ModelDebug.CompetencePersonne" FromRole="Competence" ToRole="Personne" />
+          <Property Name="Libelle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LibelleCourt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Couleur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Personnes" Relationship="Self.FK_CompetencePersonne" FromRole="Competences" ToRole="Personnes" />
         </EntityType>
         <EntityType Name="Personne">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" Nullable="true" />
-          <Property Name="Prenom" Type="String" Nullable="true" />
-          <NavigationProperty Name="Competence" Relationship="ModelDebug.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
-          <Property Name="CompetenceId" Type="Int32" Nullable="true" />
+          <Property Name="Nom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prenom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompetenceId" Type="Int32" />
+          <NavigationProperty Name="Competence" Relationship="Self.FK_CompetencePersonne" FromRole="Personnes" ToRole="Competences" />
         </EntityType>
-        <Association Name="CompetencePersonne">
-          <End Type="ModelDebug.Competence" Role="Competence" Multiplicity="0..1" />
-          <End Type="ModelDebug.Personne" Role="Personne" Multiplicity="*" />
+        <Association Name="FK_CompetencePersonne">
+          <End Role="Competences" Type="ProjetFormationDebugModel.Competence" Multiplicity="0..1" />
+          <End Role="Personnes" Type="ProjetFormationDebugModel.Personne" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Competence">
+            <Principal Role="Competences">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Personne">
+            <Dependent Role="Personnes">
               <PropertyRef Name="CompetenceId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelDebugEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <EntitySet Name="Competences" EntityType="ProjetFormationDebugModel.Competence" />
+          <EntitySet Name="Personnes" EntityType="ProjetFormationDebugModel.Personne" />
+          <AssociationSet Name="FK_CompetencePersonne" Association="Self.FK_CompetencePersonne">
+            <End Role="Competences" EntitySet="Competences" />
+            <End Role="Personnes" EntitySet="Personnes" />
+          </AssociationSet>
+          <EntitySet Name="Projets" EntityType="ProjetFormationDebugModel.Projet" />
+          <EntitySet Name="Lots" EntityType="ProjetFormationDebugModel.Lot" />
+          <AssociationSet Name="ProjetLot" Association="ProjetFormationDebugModel.ProjetLot">
+            <End Role="Projet" EntitySet="Projets" />
+            <End Role="Lot" EntitySet="Lots" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Projet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="DateDebut" Type="DateTime" Nullable="true" />
+          <Property Name="DateFin" Type="DateTime" Nullable="true" />
+          <Property Name="Nom" Type="String" Nullable="false" />
+          <Property Name="CAInitial" Type="Double" />
+          <Property Name="CodeEtat" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="Lots" Relationship="ProjetFormationDebugModel.ProjetLot" FromRole="Projet" ToRole="Lot" />
+        </EntityType>
+        <EntityType Name="Lot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="Nom" Type="String" Nullable="false" />
+          <NavigationProperty Name="Projet" Relationship="ProjetFormationDebugModel.ProjetLot" FromRole="Lot" ToRole="Projet" />
+        </EntityType>
+        <Association Name="ProjetLot">
+          <End Type="ProjetFormationDebugModel.Projet" Role="Projet" Multiplicity="0..1" />
+          <End Type="ProjetFormationDebugModel.Lot" Role="Lot" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ModelDebugStoreContainer" CdmEntityContainer="ModelDebugContainer">
+  <EntityContainerMapping StorageEntityContainer="ProjetFormationDebugModelStoreContainer" CdmEntityContainer="ModelDebugEntities">
     <EntitySetMapping Name="Competences">
-      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.Competence)">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Competence)">
         <MappingFragment StoreEntitySet="Competences">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Libelle" ColumnName="Libelle" />
@@ -106,7 +171,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Personnes">
-      <EntityTypeMapping TypeName="IsTypeOf(ModelDebug.Personne)">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Personne)">
         <MappingFragment StoreEntitySet="Personnes">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Nom" ColumnName="Nom" />
@@ -115,26 +180,55 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Projets">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Projet)">
+        <MappingFragment StoreEntitySet="Projets">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+          <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="CAInitial" ColumnName="CAInitial" />
+          <ScalarProperty Name="CodeEtat" ColumnName="CodeEtat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lots">
+      <EntityTypeMapping TypeName="IsTypeOf(ProjetFormationDebugModel.Lot)">
+        <MappingFragment StoreEntitySet="Lots">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ProjetLot" TypeName="ProjetFormationDebugModel.ProjetLot" StoreEntitySet="Lots">
+      <EndProperty Name="Projet">
+        <ScalarProperty Name="ID" ColumnName="Projet_ID" />
+      </EndProperty>
+      <EndProperty Name="Lot">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+      <Condition ColumnName="Projet_ID" IsNull="false" />
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer>
-    <edmx:Connection>
-      <edmx:DesignerInfoPropertySet>
-        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
-      </edmx:DesignerInfoPropertySet>
-    </edmx:Connection>
-    <edmx:Options>
-      <edmx:DesignerInfoPropertySet>
-        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
-        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="Par défaut" />
-        <edmx:DesignerProperty Name="UseLegacyProvider" Value="True" />
-      </edmx:DesignerInfoPropertySet>
-    </edmx:Options>
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Par défaut" />
+      </DesignerInfoPropertySet>
+    </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <edmx:Diagrams>
-    </edmx:Diagrams>
-  </edmx:Designer>
+    <Diagrams></Diagrams>
+  </Designer>
 </edmx:Edmx>

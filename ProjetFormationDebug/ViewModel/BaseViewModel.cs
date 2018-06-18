@@ -16,8 +16,8 @@ namespace ProjetFormationDebug.ViewModel
     public class BaseViewModel : INotifyPropertyChanged
     {
 
-        private static ModelDebugContainer _Context = null;
-        public static ModelDebugContainer Context
+        private static ModelDebugEntities _Context = null;
+        public static ModelDebugEntities Context
         {
             get
             {
@@ -25,7 +25,7 @@ namespace ProjetFormationDebug.ViewModel
                 {
                     try
                     {
-                        _Context = new ModelDebugContainer();
+                        _Context = new ModelDebugEntities();
                         _Context.ContextOptions.LazyLoadingEnabled = true;
                         #region Initialisation du catalogue avec des valeurs
                         if (_Context.Competences.Count() == 0)
@@ -51,9 +51,9 @@ namespace ProjetFormationDebug.ViewModel
 
                         if (_Context.Personnes.Count() == 0)
                         {
-                            _Context.Personnes.AddObject(new Personne() { Nom = "Geoffrey", Competence = _Context.Competences.First(C => C.Libelle == "Software") });
-                            _Context.Personnes.AddObject(new Personne() { Nom = "Nicola", Competence = _Context.Competences.First(C => C.Libelle == "Hw (Carte)") });
-                            _Context.Personnes.AddObject(new Personne() { Nom = "Guillaume", Competence = _Context.Competences.First(C => C.Libelle == "INDUS") });
+                            _Context.Personnes.AddObject(new Personne() { Prenom = "Geoffrey",  Nom= "Nicot", Competence = _Context.Competences.First(C => C.Libelle == "Software") });
+                            _Context.Personnes.AddObject(new Personne() { Prenom = "Nicola", Nom = "Ricciardi", Competence = _Context.Competences.First(C => C.Libelle == "Hw (Carte)") });
+                            _Context.Personnes.AddObject(new Personne() { Prenom = "Guillaume", Nom = "Megrette", Competence = _Context.Competences.First(C => C.Libelle == "INDUS") });
                             _Context.SaveChanges();
                         }
                         #endregion
@@ -96,8 +96,24 @@ namespace ProjetFormationDebug.ViewModel
             {
                 return new RelayCommand(() => Context.SaveChanges());
             }
-
         }
+
+        public ICommand Modif
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    //int Count =
+                    //    ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Added).Count() +
+                    //    ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Deleted).Count() +
+                    //    ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Modified).Count();
+                    //MessageBox.Show("Il y a " + Count + " objets modifié(s)");
+                
+                });
+            }
+        }
+
 
         private ICommand _GoTo = null;
         public ICommand GoTo

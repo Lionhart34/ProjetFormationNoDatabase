@@ -28,6 +28,3 @@ C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormation\ProjetForm
 C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormation\ProjetFormation\obj\Debug\ProjetFormation.csproj.GenerateResource.Cache
 C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormation\ProjetFormation\obj\Debug\ProjetFormation.exe
 C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormation\ProjetFormation\obj\Debug\ProjetFormation.pdb
-C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormationNoDatabase\ProjetFormation\bin\Debug\ProjetFormation.exe.config
-C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormationNoDatabase\ProjetFormation\obj\Debug\ProjetFormation.exe
-C:\Users\gnicot\Documents\Visual Studio 2013\Projects\ProjetFormationNoDatabase\ProjetFormation\obj\Debug\ProjetFormation.pdb

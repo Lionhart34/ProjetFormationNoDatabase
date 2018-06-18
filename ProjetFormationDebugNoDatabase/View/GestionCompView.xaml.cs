@@ -62,18 +62,20 @@ namespace ProjetFormationDebugNoDatabase.View
             }
         }
 
-        private void GridPrincipal_Loaded(object sender, RoutedEventArgs e)
+
+        private void ListView_Unloaded(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("List Unload");
+        }
 
-            //List<Visual> res = new List<Visual>();
-            //EnumVisual(GridPrincipal, res);
+        private void ListView_Unselected(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("List UnSelect");
+        }
 
-            //foreach(ListBox lb in res.Where(i=>i.GetType()==typeof(ListBox)))
-            //{
-            //    MessageBox.Show(lb.SelectedItem.ToString());
-            //    MessageBox.Show(lb.SelectedValue.ToString());
-            //    MessageBox.Show(lb.SelectedIndex.ToString());
-            //}
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+          
         }
 
         //public UIElement GetFirstListBox(UIElement el)

@@ -19,7 +19,8 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region Métadonnées de relation EDM
 
-[assembly: EdmRelationshipAttribute("ModelDebug", "CompetencePersonne", "Competence", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ProjetFormationDebug.Model.Competence), "Personne", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ProjetFormationDebug.Model.Personne), true)]
+[assembly: EdmRelationshipAttribute("ProjetFormationDebugModel", "FK_CompetencePersonne", "Competences", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ProjetFormationDebug.Model.Competence), "Personnes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ProjetFormationDebug.Model.Personne), true)]
+[assembly: EdmRelationshipAttribute("ProjetFormationDebugModel", "ProjetLot", "Projet", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ProjetFormationDebug.Model.Projet), "Lot", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ProjetFormationDebug.Model.Lot))]
 
 #endregion
 
@@ -30,32 +31,32 @@ namespace ProjetFormationDebug.Model
     /// <summary>
     /// Aucune documentation sur les métadonnées n'est disponible.
     /// </summary>
-    public partial class ModelDebugContainer : ObjectContext
+    public partial class ModelDebugEntities : ObjectContext
     {
         #region Constructeurs
     
         /// <summary>
-        /// Initialise un nouvel objet ModelDebugContainer à l'aide de la chaîne de connexion trouvée dans la section 'ModelDebugContainer' du fichier de configuration d'application.
+        /// Initialise un nouvel objet ModelDebugEntities à l'aide de la chaîne de connexion trouvée dans la section 'ModelDebugEntities' du fichier de configuration d'application.
         /// </summary>
-        public ModelDebugContainer() : base("name=ModelDebugContainer", "ModelDebugContainer")
+        public ModelDebugEntities() : base("name=ModelDebugEntities", "ModelDebugEntities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialisez un nouvel objet ModelDebugContainer.
+        /// Initialisez un nouvel objet ModelDebugEntities.
         /// </summary>
-        public ModelDebugContainer(string connectionString) : base(connectionString, "ModelDebugContainer")
+        public ModelDebugEntities(string connectionString) : base(connectionString, "ModelDebugEntities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialisez un nouvel objet ModelDebugContainer.
+        /// Initialisez un nouvel objet ModelDebugEntities.
         /// </summary>
-        public ModelDebugContainer(EntityConnection connection) : base(connection, "ModelDebugContainer")
+        public ModelDebugEntities(EntityConnection connection) : base(connection, "ModelDebugEntities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -102,6 +103,38 @@ namespace ProjetFormationDebug.Model
             }
         }
         private ObjectSet<Personne> _Personnes;
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        public ObjectSet<Projet> Projets
+        {
+            get
+            {
+                if ((_Projets == null))
+                {
+                    _Projets = base.CreateObjectSet<Projet>("Projets");
+                }
+                return _Projets;
+            }
+        }
+        private ObjectSet<Projet> _Projets;
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        public ObjectSet<Lot> Lots
+        {
+            get
+            {
+                if ((_Lots == null))
+                {
+                    _Lots = base.CreateObjectSet<Lot>("Lots");
+                }
+                return _Lots;
+            }
+        }
+        private ObjectSet<Lot> _Lots;
 
         #endregion
 
@@ -122,6 +155,22 @@ namespace ProjetFormationDebug.Model
         {
             base.AddObject("Personnes", personne);
         }
+    
+        /// <summary>
+        /// Méthode déconseillée pour ajouter un nouvel objet à l'EntitySet Projets. Utilisez la méthode .Add de la propriété ObjectSet&lt;T&gt; associée à la place.
+        /// </summary>
+        public void AddToProjets(Projet projet)
+        {
+            base.AddObject("Projets", projet);
+        }
+    
+        /// <summary>
+        /// Méthode déconseillée pour ajouter un nouvel objet à l'EntitySet Lots. Utilisez la méthode .Add de la propriété ObjectSet&lt;T&gt; associée à la place.
+        /// </summary>
+        public void AddToLots(Lot lot)
+        {
+            base.AddObject("Lots", lot);
+        }
 
         #endregion
 
@@ -134,7 +183,7 @@ namespace ProjetFormationDebug.Model
     /// <summary>
     /// Aucune documentation sur les métadonnées n'est disponible.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ModelDebug", Name="Competence")]
+    [EdmEntityTypeAttribute(NamespaceName="ProjetFormationDebugModel", Name="Competence")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
     public partial class Competence : EntityObject
@@ -272,18 +321,18 @@ namespace ProjetFormationDebug.Model
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ModelDebug", "CompetencePersonne", "Personne")]
+        [EdmRelationshipNavigationPropertyAttribute("ProjetFormationDebugModel", "FK_CompetencePersonne", "Personnes")]
         public EntityCollection<Personne> Personnes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Personne>("ModelDebug.CompetencePersonne", "Personne");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Personne>("ProjetFormationDebugModel.FK_CompetencePersonne", "Personnes");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Personne>("ModelDebug.CompetencePersonne", "Personne", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Personne>("ProjetFormationDebugModel.FK_CompetencePersonne", "Personnes", value);
                 }
             }
         }
@@ -295,7 +344,132 @@ namespace ProjetFormationDebug.Model
     /// <summary>
     /// Aucune documentation sur les métadonnées n'est disponible.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ModelDebug", Name="Personne")]
+    [EdmEntityTypeAttribute(NamespaceName="ProjetFormationDebugModel", Name="Lot")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Lot : EntityObject
+    {
+        #region Méthode de fabrique
+    
+        /// <summary>
+        /// Créez un nouvel objet Lot.
+        /// </summary>
+        /// <param name="id">Valeur initiale de la propriété ID.</param>
+        /// <param name="nom">Valeur initiale de la propriété Nom.</param>
+        public static Lot CreateLot(global::System.Int32 id, global::System.String nom)
+        {
+            Lot lot = new Lot();
+            lot.ID = id;
+            lot.Nom = nom;
+            return lot;
+        }
+
+        #endregion
+
+        #region Propriétés primitives
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Nom
+        {
+            get
+            {
+                return _Nom;
+            }
+            set
+            {
+                OnNomChanging(value);
+                ReportPropertyChanging("Nom");
+                _Nom = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Nom");
+                OnNomChanged();
+            }
+        }
+        private global::System.String _Nom;
+        partial void OnNomChanging(global::System.String value);
+        partial void OnNomChanged();
+
+        #endregion
+
+    
+        #region Propriétés de navigation
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ProjetFormationDebugModel", "ProjetLot", "Projet")]
+        public Projet Projet
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Projet>("ProjetFormationDebugModel.ProjetLot", "Projet").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Projet>("ProjetFormationDebugModel.ProjetLot", "Projet").Value = value;
+            }
+        }
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Projet> ProjetReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Projet>("ProjetFormationDebugModel.ProjetLot", "Projet");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Projet>("ProjetFormationDebugModel.ProjetLot", "Projet", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// Aucune documentation sur les métadonnées n'est disponible.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ProjetFormationDebugModel", Name="Personne")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
     public partial class Personne : EntityObject
@@ -427,16 +601,16 @@ namespace ProjetFormationDebug.Model
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ModelDebug", "CompetencePersonne", "Competence")]
+        [EdmRelationshipNavigationPropertyAttribute("ProjetFormationDebugModel", "FK_CompetencePersonne", "Competences")]
         public Competence Competence
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ModelDebug.CompetencePersonne", "Competence").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ProjetFormationDebugModel.FK_CompetencePersonne", "Competences").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ModelDebug.CompetencePersonne", "Competence").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ProjetFormationDebugModel.FK_CompetencePersonne", "Competences").Value = value;
             }
         }
         /// <summary>
@@ -448,13 +622,218 @@ namespace ProjetFormationDebug.Model
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ModelDebug.CompetencePersonne", "Competence");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Competence>("ProjetFormationDebugModel.FK_CompetencePersonne", "Competences");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Competence>("ModelDebug.CompetencePersonne", "Competence", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Competence>("ProjetFormationDebugModel.FK_CompetencePersonne", "Competences", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// Aucune documentation sur les métadonnées n'est disponible.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ProjetFormationDebugModel", Name="Projet")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Projet : EntityObject
+    {
+        #region Méthode de fabrique
+    
+        /// <summary>
+        /// Créez un nouvel objet Projet.
+        /// </summary>
+        /// <param name="id">Valeur initiale de la propriété ID.</param>
+        /// <param name="nom">Valeur initiale de la propriété Nom.</param>
+        public static Projet CreateProjet(global::System.Int32 id, global::System.String nom)
+        {
+            Projet projet = new Projet();
+            projet.ID = id;
+            projet.Nom = nom;
+            return projet;
+        }
+
+        #endregion
+
+        #region Propriétés primitives
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateDebut
+        {
+            get
+            {
+                return _DateDebut;
+            }
+            set
+            {
+                OnDateDebutChanging(value);
+                ReportPropertyChanging("DateDebut");
+                _DateDebut = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDebut");
+                OnDateDebutChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateDebut;
+        partial void OnDateDebutChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDebutChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateFin
+        {
+            get
+            {
+                return _DateFin;
+            }
+            set
+            {
+                OnDateFinChanging(value);
+                ReportPropertyChanging("DateFin");
+                _DateFin = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateFin");
+                OnDateFinChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateFin;
+        partial void OnDateFinChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateFinChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Nom
+        {
+            get
+            {
+                return _Nom;
+            }
+            set
+            {
+                OnNomChanging(value);
+                ReportPropertyChanging("Nom");
+                _Nom = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Nom");
+                OnNomChanged();
+            }
+        }
+        private global::System.String _Nom;
+        partial void OnNomChanging(global::System.String value);
+        partial void OnNomChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> CAInitial
+        {
+            get
+            {
+                return _CAInitial;
+            }
+            set
+            {
+                OnCAInitialChanging(value);
+                ReportPropertyChanging("CAInitial");
+                _CAInitial = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CAInitial");
+                OnCAInitialChanged();
+            }
+        }
+        private Nullable<global::System.Double> _CAInitial;
+        partial void OnCAInitialChanging(Nullable<global::System.Double> value);
+        partial void OnCAInitialChanged();
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CodeEtat
+        {
+            get
+            {
+                return _CodeEtat;
+            }
+            set
+            {
+                OnCodeEtatChanging(value);
+                ReportPropertyChanging("CodeEtat");
+                _CodeEtat = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CodeEtat");
+                OnCodeEtatChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CodeEtat;
+        partial void OnCodeEtatChanging(Nullable<global::System.Int32> value);
+        partial void OnCodeEtatChanged();
+
+        #endregion
+
+    
+        #region Propriétés de navigation
+    
+        /// <summary>
+        /// Aucune documentation sur les métadonnées n'est disponible.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ProjetFormationDebugModel", "ProjetLot", "Lot")]
+        public EntityCollection<Lot> Lots
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lot>("ProjetFormationDebugModel.ProjetLot", "Lot");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lot>("ProjetFormationDebugModel.ProjetLot", "Lot", value);
                 }
             }
         }

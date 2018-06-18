@@ -73,7 +73,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Nom" Type="String" Nullable="true" />
           <Property Name="Prenom" Type="String" Nullable="true" />
-          <NavigationProperty Name="Competence" Relationship="ModelDebug.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
+          <NavigationProperty Name="CompetencePrincipale" Relationship="ModelDebug.CompetencePersonne" FromRole="Personne" ToRole="Competence" />
           <Property Name="CompetenceId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="CompetencePersonne">

@@ -16,6 +16,20 @@ namespace ProjetFormationDebugNoDatabase.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        private static ObservableCollection<Wrapper> _personnesWrapper;
+        public static ObservableCollection<Wrapper> PersonnesWrapper
+        {
+            get
+            {
+                if (_personnesWrapper == null)
+                    _personnesWrapper = new ObservableCollection<Wrapper>();
+                return _personnesWrapper;
+            }
+            set
+            {
+                _personnesWrapper = value;
+            }
+        }
 
         private static ObservableCollection<Personne> _personnes = null;
         public static ObservableCollection<Personne> Personnes
@@ -33,7 +47,7 @@ namespace ProjetFormationDebugNoDatabase.ViewModel
             }
         }
 
-        private static ObservableCollection<Competence> _competences = null;
+        private static ObservableCollection<Competence> _competences;
         public static ObservableCollection<Competence> Competences
         {
             get
@@ -89,7 +103,7 @@ namespace ProjetFormationDebugNoDatabase.ViewModel
                         CurrentViewModel = new GestionCompViewModel();
                         break;
                     default:
-                        CurrentViewModel = null;
+                        CurrentViewModel = this;
                         break;
                 }
             }

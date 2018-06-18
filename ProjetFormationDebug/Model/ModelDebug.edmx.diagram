@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3e8f0db696a04599a4816790636818d2" Name="Diagram1" >
-        <EntityTypeShape EntityType="ModelDebug.Competence" Width="1.5" PointX="6.625" PointY="2.375" />
-        <EntityTypeShape EntityType="ModelDebug.Personne" Width="1.5" PointX="2.875" PointY="2.25" />
-        <AssociationConnector Association="ModelDebug.CompetencePersonne" />
+      <Diagram DiagramId="0c8cf60b0f154b70a642c57393685eca" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjetFormationDebugModel.Competence" Width="1.5" PointX="2.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjetFormationDebugModel.Personne" Width="1.5" PointX="5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjetFormationDebugModel.Projet" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjetFormationDebugModel.Lot" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="ProjetFormationDebugModel.FK_CompetencePersonne" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjetFormationDebugModel.ProjetLot" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
